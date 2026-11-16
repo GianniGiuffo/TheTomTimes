@@ -1,0 +1,15 @@
+language: it
+region: IT
+window_hours: 24
+max_results_per_query: 20
+interests:
+  - category: Tecnologia
+    keywords: [Linux, open source, self-hosting]
+  - category: Intelligenza artificiale
+    keywords: [intelligenza artificiale, modelli di linguaggio, Ollama]
+  - category: Gaming
+    keywords: [videogiochi, Unreal Engine, sviluppo videogiochi]
+  - category: Scienza
+    keywords: [NASA, esplorazione spaziale, fisica]
+  - category: Attualità
+    keywords: [geopolitica, diplomazia internazionale]

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{{ .Description | default site.Params.description }}">
+  <title>{{ if not .IsHome }}{{ .Title }} · {{ end }}{{ site.Title }}</title>
+  {{ with resources.Get "css/site.css" | minify | fingerprint }}
+    <link rel="stylesheet" href="{{ .RelPermalink }}">
+  {{ end }}
+  {{ with resources.Get "js/theme.js" | minify | fingerprint }}
+    <script src="{{ .RelPermalink }}"></script>
+  {{ end }}
+</head>
+<body id="inizio">
+  <a class="skip-link" href="#contenuto">Vai al contenuto</a>
+  {{ partial "header.html" . }}
+  <main class="wrap" id="contenuto">
+    {{ block "main" . }}{{ end }}
+  </main>
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <a class="wordmark" href="{{ site.Home.RelPermalink }}">TheTom<span>Times</span></a>
+      <p>Giornale personale su tecnologia, scienza e cultura digitale.</p>
+      <a class="footer-link" href="#inizio">Torna su <span aria-hidden="true">↑</span></a>
+    </div>
+  </footer>
+</body>
+</html>

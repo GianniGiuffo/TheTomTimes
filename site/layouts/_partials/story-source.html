@@ -1,0 +1,6 @@
+{{ if or .source_name .published_at }}
+  <p class="story-source">
+    {{ with .source_name }}<span>{{ . }}</span>{{ end }}
+    {{ with .published_at }}<time datetime="{{ . }}">{{ time.Format "2 January 2006" (time.AsTime .) }}</time>{{ end }}
+  </p>
+{{ end }}

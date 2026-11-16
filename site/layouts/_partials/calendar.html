@@ -1,0 +1,58 @@
+{{ $latest := (index . 0).Date }}
+{{ $oldest := (index . (sub (len .) 1)).Date }}
+{{ $latestMonth := time.AsTime (printf "%s-01" ($latest.Format "2006-01")) }}
+{{ $monthCount := add 1 (sub (int $latest.Month) (int $oldest.Month)) (mul 12 (sub $latest.Year $oldest.Year)) }}
+{{ $editionsByDay := dict }}
+{{ range . }}
+  {{ $editionsByDay = merge $editionsByDay (dict (.Date.Format "2006-01-02") .) }}
+{{ end }}
+{{ $weekdays := slice "Lunedì" "Martedì" "Mercoledì" "Giovedì" "Venerdì" "Sabato" "Domenica" }}
+
+{{ range seq 0 (sub $monthCount 1) }}
+  {{ $month := $latestMonth.AddDate 0 (sub 0 .) 0 }}
+  {{ $older := $month.AddDate 0 -1 0 }}
+  {{ $newer := $month.AddDate 0 1 0 }}
+  {{ $label := time.Format "January 2006" $month }}
+  {{ $id := printf "mese-%s" ($month.Format "2006-01") }}
+  {{ $firstColumn := mod (add 6 (int $month.Weekday)) 7 }}
+  {{ $days := ($newer.AddDate 0 0 -1).Day }}
+  {{ $weeks := div (add $firstColumn $days 6) 7 }}
+  <section class="calendar-month" id="{{ $id }}" aria-labelledby="{{ $id }}-titolo" tabindex="-1">
+    <div class="calendar-heading">
+      {{ if lt . (sub $monthCount 1) }}
+        <a href="#mese-{{ $older.Format "2006-01" }}" aria-label="Mese precedente, {{ time.Format "January 2006" $older }}" rel="prev">←</a>
+      {{ end }}
+      <h3 id="{{ $id }}-titolo">{{ $label }}</h3>
+      {{ if gt . 0 }}
+        <a class="calendar-next" href="#mese-{{ $newer.Format "2006-01" }}" aria-label="Mese successivo, {{ time.Format "January 2006" $newer }}" rel="next">→</a>
+      {{ end }}
+    </div>
+    <table aria-labelledby="{{ $id }}-titolo">
+      <thead>
+        <tr>
+          {{ range $weekdays }}<th scope="col" aria-label="{{ . }}">{{ substr . 0 2 }}</th>{{ end }}
+        </tr>
+      </thead>
+      <tbody>
+        {{ range seq 0 (sub $weeks 1) }}
+          {{ $week := . }}
+          <tr>
+            {{ range seq 0 6 }}
+              {{ $day := sub (add (mul $week 7) . 1) $firstColumn }}
+              <td>
+                {{ if and (ge $day 1) (le $day $days) }}
+                  {{ $date := $month.AddDate 0 0 (sub $day 1) }}
+                  {{ with index $editionsByDay ($date.Format "2006-01-02") }}
+                    <a href="{{ .RelPermalink }}" aria-label="{{ .Title }}">{{ $day }}</a>
+                  {{ else }}
+                    <span>{{ $day }}</span>
+                  {{ end }}
+                {{ end }}
+              </td>
+            {{ end }}
+          </tr>
+        {{ end }}
+      </tbody>
+    </table>
+  </section>
+{{ end }}

@@ -1,0 +1,38 @@
+{{ define "main" }}
+  {{ $editions := .RegularPages.ByDate.Reverse }}
+  <header class="front-page">
+    <h1>{{ .Title }}</h1>
+    <p class="edition-description">{{ .Description }}</p>
+  </header>
+
+  {{ with $editions }}
+    <div class="archive-grid">
+      <section class="archive-calendar" aria-labelledby="calendar-title">
+        <h2 class="section-title" id="calendar-title">Calendario</h2>
+        {{ partial "calendar.html" . }}
+      </section>
+
+      <section aria-labelledby="archive-title">
+        <h2 class="section-title" id="archive-title">Tutte le edizioni</h2>
+        <ul class="archive-editions">
+          {{ range . }}
+            <li>
+              <time datetime="{{ .Date.Format "2006-01-02" }}">{{ time.Format "2 January 2006" .Date }}</time>
+              <h3><a href="{{ .RelPermalink }}">{{ .Params.featured.title }} <span aria-hidden="true">↗</span></a></h3>
+              {{ $categories := slice .Params.featured.category }}
+              {{ range .Params.stories }}
+                {{ $categories = $categories | append .category }}
+              {{ end }}
+              {{ range .Params.videos }}
+                {{ $categories = $categories | append .category }}
+              {{ end }}
+              <p class="category">{{ delimit (uniq $categories) " · " }}</p>
+            </li>
+          {{ end }}
+        </ul>
+      </section>
+    </div>
+  {{ else }}
+    <p class="archive-empty">Nessuna edizione disponibile.</p>
+  {{ end }}
+{{ end }}

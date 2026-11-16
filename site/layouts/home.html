@@ -1,0 +1,11 @@
+{{ define "main" }}
+  {{ $archive := site.GetPage "/daily" }}
+  {{ with index $archive.RegularPages.ByDate.Reverse 0 }}
+    {{ partial "edition.html" (dict "edition" . "home" true) }}
+  {{ else }}
+    <section class="front-page">
+      <h1>Il briefing.</h1>
+      <p class="edition-description">Le edizioni pubblicate saranno disponibili nell’archivio.</p>
+    </section>
+  {{ end }}
+{{ end }}

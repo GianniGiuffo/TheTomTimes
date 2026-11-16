@@ -1,0 +1,6 @@
+services:
+  web:
+    build:
+      context: ./site
+    ports:
+      - "${WEB_HOST:-127.0.0.1}:${WEB_PORT:-8080}:80"

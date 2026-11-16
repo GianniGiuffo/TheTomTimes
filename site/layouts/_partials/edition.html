@@ -1,0 +1,86 @@
+{{ $edition := .edition }}
+{{ $date := $edition.Date }}
+{{ $featured := $edition.Params.featured }}
+  <section class="front-page" aria-labelledby="edition-title">
+    <div class="edition-meta">
+      <time datetime="{{ $date.Format "2006-01-02" }}">{{ time.Format "Monday 2 January 2006" $date }}</time>
+      <span class="demo-label">{{ if eq $edition.Params.kind "rss" }}Dai feed RSS{{ else }}Edizione dimostrativa{{ end }}</span>
+    </div>
+    <h1 id="edition-title">{{ if .home }}Il briefing.{{ else }}{{ $edition.Title }}{{ end }}</h1>
+    {{ if .home }}
+      <p class="edition-description">{{ site.Params.description }}</p>
+      <div class="edition-links">
+        <a href="{{ $edition.RelPermalink }}">Apri questa edizione</a>
+        <a href="{{ $edition.CurrentSection.RelPermalink }}">Sfoglia l’archivio <span aria-hidden="true">→</span></a>
+      </div>
+    {{ end }}
+
+    <article class="lead{{ if not $featured.image }} lead-text-only{{ end }}">
+      <div class="lead-copy">
+        <p class="category">In primo piano <span aria-hidden="true">/</span> {{ $featured.category }}</p>
+        <h2>{{ $featured.title }}</h2>
+        {{ partial "story-source.html" $featured }}
+        <p class="lead-summary">{{ $featured.summary }}</p>
+        {{ with $featured.slug }}
+          {{ with site.GetPage . }}
+            <a class="read-link" href="{{ .RelPermalink }}">Leggi la storia <span aria-hidden="true">↗</span></a>
+          {{ end }}
+        {{ end }}
+        {{ with $featured.original_url }}
+          <a class="read-link" href="{{ . }}">Leggi alla fonte <span aria-hidden="true">↗</span></a>
+        {{ end }}
+      </div>
+      {{ with $featured.image }}
+        <img class="lead-image" src="{{ . | relURL }}" alt="" fetchpriority="high">
+      {{ end }}
+    </article>
+  </section>
+
+  {{ if $edition.Params.stories }}
+  <section class="news-section" id="notizie" aria-labelledby="news-title">
+    <h2 class="section-title" id="news-title">Le notizie</h2>
+    <div class="news-grid">
+      {{ range $edition.Params.stories }}
+        <article class="story">
+          {{ with .image }}<img src="{{ . | relURL }}" alt="" loading="lazy">{{ end }}
+          <div class="card-copy">
+            <p class="category">{{ .category }}</p>
+            <h3>{{ .title }}</h3>
+            {{ partial "story-source.html" . }}
+            <p>{{ .summary }}</p>
+            {{ with .slug }}
+              {{ with site.GetPage . }}
+                <a class="read-link" href="{{ .RelPermalink }}" aria-label="Leggi la storia: {{ .Title }}">Leggi la storia <span aria-hidden="true">↗</span></a>
+              {{ end }}
+            {{ end }}
+            {{ with .original_url }}
+              <a class="read-link" href="{{ . }}">Leggi alla fonte <span aria-hidden="true">↗</span></a>
+            {{ end }}
+          </div>
+        </article>
+      {{ end }}
+    </div>
+  </section>
+
+  {{ end }}
+
+  {{ if $edition.Params.videos }}
+  <section class="video-section" id="video" aria-labelledby="video-title">
+    <h2 class="section-title" id="video-title">Da guardare</h2>
+    <div class="video-grid">
+      {{ range $edition.Params.videos }}
+        <article class="story">
+          <video controls playsinline preload="none" poster="{{ .image | relURL }}" aria-label="{{ .title }}">
+            <source src="{{ .source | relURL }}" type="video/mp4">
+            <a href="{{ .source | relURL }}">Apri il video</a>
+          </video>
+          <div class="card-copy">
+            <p class="category">{{ .category }} <span aria-hidden="true">/</span> Clip senza audio</p>
+            <h3>{{ .title }}</h3>
+            <p>{{ .summary }}</p>
+          </div>
+        </article>
+      {{ end }}
+    </div>
+  </section>
+  {{ end }}

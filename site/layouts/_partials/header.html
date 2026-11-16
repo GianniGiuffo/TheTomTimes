@@ -1,0 +1,23 @@
+{{ $home := site.Home.RelPermalink }}
+{{ $archive := site.GetPage "/daily" }}
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="wordmark" href="{{ $home }}">TheTom<span>Times</span></a>
+    <nav aria-label="Navigazione principale">
+      <a href="{{ if .IsHome }}#inizio{{ else }}{{ $home }}{{ end }}"{{ if .IsHome }} aria-current="location"{{ end }}>Edizione</a>
+      {{ $edition := . }}
+      {{ $sectionURL := "" }}
+      {{ if not (and (eq .Section "daily") .IsPage) }}
+        {{ $edition = index $archive.RegularPages.ByDate.Reverse 0 }}
+        {{ if not .IsHome }}{{ $sectionURL = $home }}{{ end }}
+      {{ end }}
+      {{ if and $edition $edition.Params.stories }}<a href="{{ $sectionURL }}#notizie">Notizie</a>{{ end }}
+      {{ if and $edition $edition.Params.videos }}<a href="{{ $sectionURL }}#video">Video</a>{{ end }}
+      <a href="{{ $archive.RelPermalink }}"{{ if .Eq $archive }} aria-current="page"{{ end }}>Archivio</a>
+    </nav>
+    <button class="theme-toggle" type="button" aria-label="Cambia tema" hidden>
+      <span class="theme-sun" aria-hidden="true">☼</span>
+      <span class="theme-moon" aria-hidden="true">☾</span>
+    </button>
+  </div>
+</header>

@@ -1,0 +1,9 @@
+title = "TheTomTimes"
+baseURL = "http://localhost:8080/"
+locale = "it-IT"
+defaultContentLanguage = "it"
+relativeURLs = true
+disableKinds = ["taxonomy", "term", "rss", "sitemap"]
+
+[params]
+description = "Il tuo giornale personale su tecnologia, scienza e cultura digitale."

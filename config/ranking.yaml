@@ -1,0 +1,12 @@
+edition_size: 15
+recency_hours: 24
+weights:
+  interest: 60
+  recency: 30
+  source: 10
+default_source_priority: 50
+source_priorities:
+  NASA: 90
+  ESA: 90
+  KDE: 80
+exclude_keywords: []

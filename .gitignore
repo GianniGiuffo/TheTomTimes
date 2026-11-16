@@ -1,0 +1,8 @@
+/site/public/
+/site/resources/_gen/
+/site/.hugo_build.lock
+/.env
+__pycache__/
+/output/
+/data/
+/.venv/

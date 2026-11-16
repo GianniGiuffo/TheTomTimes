@@ -1,0 +1,19 @@
+{{ define "main" }}
+  {{ $archive := .CurrentSection }}
+  {{ partial "edition.html" (dict "edition" .) }}
+  <nav class="edition-pager" aria-label="Navigazione tra le edizioni">
+    {{ with $archive.RegularPages.Prev . }}
+      <a rel="prev" href="{{ .RelPermalink }}">
+        <span>← Edizione precedente</span>
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ time.Format "2 January 2006" .Date }}</time>
+      </a>
+    {{ end }}
+    <a class="pager-archive" href="{{ $archive.RelPermalink }}#mese-{{ .Date.Format "2006-01" }}">Archivio e calendario</a>
+    {{ with $archive.RegularPages.Next . }}
+      <a class="pager-next" rel="next" href="{{ .RelPermalink }}">
+        <span>Edizione successiva →</span>
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ time.Format "2 January 2006" .Date }}</time>
+      </a>
+    {{ end }}
+  </nav>
+{{ end }}

@@ -1,0 +1,17 @@
+[
+  {
+    "name": "NASA",
+    "url": "https://www.nasa.gov/feed/",
+    "category": "Scienza"
+  },
+  {
+    "name": "ESA",
+    "url": "https://www.esa.int/rss/news.rss",
+    "category": "Scienza"
+  },
+  {
+    "name": "KDE",
+    "url": "https://kde.org/announcements/index.xml",
+    "category": "Tecnologia"
+  }
+]
